@@ -24,17 +24,26 @@ contract School {
 
   function addStudent(address _address, string memory _name) public {
     require(msg.sender == owner, "You need to be the contract owner to add a student");
+    require(studentExists(_address) == false , "Student already exists");
     students[_address].name = _name;
   }
 
   function addGrade(address _address, uint _points, string memory _field) public {
     require(msg.sender == owner, "You need to be the contract owner to add a grade");
+    require(studentExists(_address) == true, "Student doesn't exist");
+
     Grade memory g = Grade(_points, _field);
     students[_address].grades.push(g);
   }
 
   function getGrades(address _address) view public returns(Grade[] memory) {
+    require(msg.sender == owner, "You need to be the contract owner to view a grade");
     return students[_address].grades;
+  }
+
+  function studentExists(address _address) view public returns(bool) {
+    bytes memory nameOfStudent = bytes(students[_address].name);
+    return nameOfStudent.length > 0;
   }
 
 }
