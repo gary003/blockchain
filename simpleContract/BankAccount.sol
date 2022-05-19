@@ -1,8 +1,8 @@
-pragma solidity^0.8.11;
+pragma solidity ^0.8.7;
 
 // SPDX-License-Identifier: MIT
 
-contract BankAccount {
+contract simple {
 
     struct Account {
         uint money;
@@ -23,11 +23,11 @@ contract BankAccount {
         return accounts[msg.sender].numOp;
     }
 
-    function withdraw(address payable _to) external {
+    function withdraw(address recipient) external payable {
         uint allMoney = accounts[msg.sender].money;
         accounts[msg.sender].money = 0;
         accounts[msg.sender].numOp += 1;        
-        _to.transfer(allMoney);
+        payable (address(recipient)).transfer(allMoney);
     }
 
     receive() external payable {
